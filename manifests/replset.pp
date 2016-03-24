@@ -11,5 +11,5 @@ class mongodb::replset(
   # Order replset before any DB's and shard config
   Mongodb_replset <| |> -> Mongodb::Db <| title != 'admin' |>
   Mongodb_replset <| |> -> Mongodb_shard <| |>
-  Mongodb_replset <| |> -> Mongodb_user <| title != "User ${admin_username} on db admin" |>
+  Mongodb_replset <| |> -> Mongodb_user <| username != $admin_username |>
 }
