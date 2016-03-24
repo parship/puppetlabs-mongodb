@@ -5,7 +5,6 @@ Facter.add('mongodb_is_master') do
     if Facter::Core::Execution.which('mongo')
       mongo_output = Facter::Core::Execution.exec('mongo --quiet --eval "printjson(db.isMaster())" 2>/dev/null')
 
-      puts mongo_output
       if mongo_output =~ /Failed to connect to/
         'failed_to_connect'
       else
