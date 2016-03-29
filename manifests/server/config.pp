@@ -75,12 +75,6 @@ class mongodb::server::config {
     owner => $user,
     group => $group,
   }
-  if $auth == true and $::mongodb_is_master=='not_installed' {
-    $real_auth=false
-  }
-  else {
-    $real_auth=$auth
-  }
 
   if ($logpath and $syslog) { fail('You cannot use syslog with logpath')}
 
