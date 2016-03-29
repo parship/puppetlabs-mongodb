@@ -70,7 +70,7 @@ storage.engine: <%= @storage_engine_internal %>
 
 
 #Security
-<% if @real_auth -%>
+<% if @real_auth == true -%>
 security.authorization: enabled
 <% else -%>
 security.authorization: disabled

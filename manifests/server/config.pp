@@ -64,9 +64,22 @@ class mongodb::server::config {
   $storage_engine  = $mongodb::server::storage_engine
   $version         = $mongodb::server::version
 
+  if $auth == true and $::mongodb_is_master=='not_installed' {
+    $real_auth=false
+  }
+  else {
+    $real_auth=$auth
+  }
+
   File {
     owner => $user,
     group => $group,
+  }
+  if $auth == true and $::mongodb_is_master=='not_installed' {
+    $real_auth=false
+  }
+  else {
+    $real_auth=$auth
   }
 
   if ($logpath and $syslog) { fail('You cannot use syslog with logpath')}
@@ -194,12 +207,6 @@ class mongodb::server::config {
       # - $verbose
       # - $verbositylevel
       $cfg_content = template('mongodb/mongodb.conf.erb')
-    }
-    if $auth == true and $::mongodb_is_master=='not_installed' {
-      $real_auth=false
-    }
-    else {
-      $real_auth=$auth
     }
 
     file { $config:
