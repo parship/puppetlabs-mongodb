@@ -167,7 +167,7 @@ class mongodb::server (
 
       # Make sure that the ordering is correct
       if $create_admin {
-        Mongodb::Db['admin'] -> Class['mongodb::replset']
+        Class['mongodb::replset'] -> Mongodb::Db['admin']
       }
 
     }
