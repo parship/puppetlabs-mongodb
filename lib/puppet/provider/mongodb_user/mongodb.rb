@@ -58,7 +58,7 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb, :parent => Puppet::Provider::
   mk_resource_methods
 
   def create
-    if db_ismaster or @resource[:database] == 'admin'
+    if db_ismaster
       if mongo_24?
         user = {
           :user => @resource[:username],
