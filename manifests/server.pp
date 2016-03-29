@@ -173,7 +173,8 @@ class mongodb::server (
             ensure =>  present,
             path  => $config,
             match => "security.authorization:",
-            line  => "security.authorization: enabled"
+            line  => "security.authorization: enabled",
+            require => Class['mongodb::replset']
           }
           exec{'/sbin/restart mongod':
             user  => 'root',
