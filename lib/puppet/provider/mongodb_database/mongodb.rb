@@ -26,7 +26,7 @@ Puppet::Type.type(:mongodb_database).provide(:mongodb, :parent => Puppet::Provid
   end
 
   def create
-    if db_ismaster
+    if db_ismaster or @resource[:name] == 'admin'
       mongo_eval('db.dummyData.insert({"created_by_puppet": 1})', @resource[:name])
     else
       Puppet.warning 'Database creation is available only from master host'
