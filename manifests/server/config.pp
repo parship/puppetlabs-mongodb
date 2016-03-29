@@ -195,7 +195,7 @@ class mongodb::server::config {
       # - $verbositylevel
       $cfg_content = template('mongodb/mongodb.conf.erb')
     }
-    if $auth == true and $::mongodb_is_master {
+    if $auth == true and $::mongodb_is_master=='not_installed' {
       $real_auth=false
     }
     else {
