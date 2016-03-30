@@ -181,7 +181,7 @@ class mongodb::server (
           file_line{ 'enable_keyfile' :
             ensure  =>  present,
             path    => $config,
-            line    => "security.Keyfile: $keyfile",
+            line    => "security.keyFile: $keyfile",
             require => [Class['mongodb::replset'], Mongodb::Db['admin']],
             notify  => Exec['/sbin/restart mongod']
           }
