@@ -9,6 +9,7 @@ describe 'mongodb::repo', :type => :class do
         :operatingsystem        => 'Debian',
         :operatingsystemrelease => '7.0',
         :lsbdistid              => 'Debian',
+        :root_home=> '/root'
       }
     end
 

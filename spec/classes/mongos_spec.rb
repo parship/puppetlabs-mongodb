@@ -5,6 +5,7 @@ describe 'mongodb::mongos' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'Debian',
+      :root_home=> '/root'
     }
   end
 

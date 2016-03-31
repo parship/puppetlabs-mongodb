@@ -8,6 +8,7 @@ describe 'mongodb::mongos::config' do
       {
         :osfamily        => 'Debian',
         :operatingsystem => 'Debian',
+        :root_home  => '/root'
       }
     end
 

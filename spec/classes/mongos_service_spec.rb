@@ -8,6 +8,7 @@ describe 'mongodb::mongos::service', :type => :class do
         :osfamily               => 'Debian',
         :operatingsystem        => 'Debian',
         :operatingsystemrelease => '7.0',
+        :root_home=> '/root'
       }
     end
 

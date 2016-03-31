@@ -8,6 +8,7 @@ describe 'mongodb::mongos::install', :type => :class do
       {
         :osfamily        => 'Debian',
         :operatingsystem => 'Debian',
+        :root_home  => '/root'
       }
     end
 

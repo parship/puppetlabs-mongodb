@@ -5,6 +5,7 @@ describe 'mongodb::server' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'Debian',
+      :root_home  => '/root'
     }
   end
 
@@ -46,7 +47,9 @@ describe 'mongodb::server' do
 
   context 'when deploying on Solaris' do
     let :facts do
-      { :osfamily        => 'Solaris' }
+      { :osfamily        => 'Solaris',
+      :root_home => '/root'
+      }
     end
     it { expect { is_expected.to raise_error(Puppet::Error) } }
   end
