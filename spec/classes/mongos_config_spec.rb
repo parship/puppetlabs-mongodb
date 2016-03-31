@@ -8,7 +8,8 @@ describe 'mongodb::mongos::config' do
       {
         :osfamily        => 'Debian',
         :operatingsystem => 'Debian',
-        :root_home  => '/root'
+        :root_home  => '/root',
+        :operatingsystemmajrelease  => '14.04'
       }
     end
 
