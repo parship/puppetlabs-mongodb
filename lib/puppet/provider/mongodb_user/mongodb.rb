@@ -37,7 +37,8 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb, parent: Puppet::Provider::Mon
                 database: user['db'],
                 roles: from_roles(user['roles'], user['db']),
                 password_hash: user['credentials']['MONGODB-CR'],
-                scram_credentials: user['credentials']['SCRAM-SHA-1'])
+                scram_credentials: user['credentials']['SCRAM-SHA-1'],
+                scram_sha256_credentials: user['credentials']['SCRAM-SHA-256'])
           end
         rescue => e
           Puppet.warning "Could not get instances for mongodb_database: #{e}"
@@ -75,19 +76,29 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb, parent: Puppet::Provider::Mon
 
         mongo_eval("db.addUser(#{user.to_json})", @resource[:database])
       else
-        password_hash = @resource[:password_hash]
+        # TODO: use plain password and set "digestPassword" to "true" if SCRAM-SHA-256 is used
 
-        if password_hash
-        elsif @resource[:password]
-          password_hash = Puppet::Util::MongodbMd5er.md5(@resource[:username], @resource[:password])
+        digest_password = @resource[:digest_password]
+
+        if digest_password
+          pwd = @resource[:password]
+        else
+          password_hash = @resource[:password_hash]
+          if password_hash
+          elsif @resource[:password]
+            password_hash = Puppet::Util::MongodbMd5er.md5(@resource[:username], @resource[:password])
+          end
+          pwd = password_hash
         end
+
+
         cmd_json = <<-EOS.gsub(%r{^\s*}, '').gsub(%r{$\n}, '')
 	{
 	  "createUser": "#{@resource[:username]}",
-	  "pwd": "#{password_hash}",
+	  "pwd": "#{pwd}",
 	  "customData": {"createdBy": "Puppet Mongodb_user['#{@resource[:name]}']"},
 	  "roles": #{@resource[:roles].to_json},
-	  "digestPassword": false
+	  "digestPassword": #{digest_password}
 	}
         EOS
 

@@ -5,7 +5,7 @@ require 'tempfile'
 describe Puppet::Type.type(:mongodb_user).provider(:mongodb) do
   let(:raw_users) do
     [
-      { '_id' => 'admin.root', 'user' => 'root', 'db' => 'admin', 'credentials' => { 'MONGODB-CR' => 'pass', 'SCRAM-SHA-1' => { 'iterationCount' => 10_000, 'salt' => 'salt', 'storedKey' => 'storedKey', 'serverKey' => 'serverKey' } }, 'roles' => [{ 'role' => 'role2', 'db' => 'admin' }, { 'role' => 'role1', 'db' => 'admin' }] }
+      { '_id' => 'admin.root', 'user' => 'root', 'db' => 'admin', 'credentials' => { 'MONGODB-CR' => 'pass', 'SCRAM-SHA-1' => { 'iterationCount' => 10_000, 'salt' => 'salt', 'storedKey' => 'storedKey', 'serverKey' => 'serverKey' }, 'SCRAM-SHA-256' => { 'iterationCount' => 15_000, 'salt' => 'salt256', 'storedKey' => 'storedKey256', 'serverKey' => 'serverKey256' } }, 'roles' => [{ 'role' => 'role2', 'db' => 'admin' }, { 'role' => 'role1', 'db' => 'admin' }] }
     ].to_json
   end
 

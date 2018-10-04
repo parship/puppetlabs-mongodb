@@ -72,6 +72,7 @@ Puppet::Type.newtype(:mongodb_user) do
         end
       end
       should == is
+      # TODO check SCRAM-SHA-256 hash
     end
   end
 
@@ -98,6 +99,14 @@ Puppet::Type.newtype(:mongodb_user) do
     desc 'The SCRAM-SHA-1 credentials of a user. These are read only and change when password or password_hash changes.'
   end
 
+  newproperty(:scram_sha256_credentials) do
+    desc 'The SCRAM-SHA-256 credentials of a user. These are read only and change when password or password_hash changes.'
+  end
+
+  newproperty(:digest_password) do
+    desc 'Determines whether or not the supplied password is pre-hashed before being used with the specified authentication mechanism.'
+  end
+
   autorequire(:package) do
     'mongodb_client'
   end
@@ -116,8 +125,14 @@ Puppet::Type.newtype(:mongodb_user) do
     elsif !self[:password_hash].nil? && !self[:password].nil?
       err("Only one of 'password_hash' or 'password' should be provided")
     end
+    if self[:digest_password] && self[:password].nil?
+      err("If 'digest_password' is true then a 'password' has to be provided")
+    end
     if should(:scram_credentials)
       raise("The parameter 'scram_credentials' is read-only and cannot be changed")
+    end
+    if should(:scram_sha256_credentials)
+      raise("The parameter 'scram_sha256_credentials' is read-only and cannot be changed")
     end
   end
 end
