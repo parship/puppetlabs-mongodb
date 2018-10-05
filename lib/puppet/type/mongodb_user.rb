@@ -126,7 +126,7 @@ Puppet::Type.newtype(:mongodb_user) do
       err("Only one of 'password_hash' or 'password' should be provided")
     end
     if self[:digest_password] && self[:password].nil?
-      err("If 'digest_password' is true then a 'password' has to be provided")
+      raise("If 'digest_password' is true then a 'password' has to be provided")
     end
     if should(:scram_credentials)
       raise("The parameter 'scram_credentials' is read-only and cannot be changed")

@@ -91,6 +91,7 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb, parent: Puppet::Provider::Mon
           pwd = password_hash
         end
 
+        digest_password_val = digest_password ? "true" : "false"
 
         cmd_json = <<-EOS.gsub(%r{^\s*}, '').gsub(%r{$\n}, '')
 	{
@@ -98,7 +99,7 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb, parent: Puppet::Provider::Mon
 	  "pwd": "#{pwd}",
 	  "customData": {"createdBy": "Puppet Mongodb_user['#{@resource[:name]}']"},
 	  "roles": #{@resource[:roles].to_json},
-	  "digestPassword": #{digest_password}
+	  "digestPassword": #{digest_password_val}
 	}
         EOS
 

@@ -18,6 +18,7 @@ define mongodb::db (
   Optional[String] $password      = undef,
   Array[String]    $roles         = ['dbAdmin'],
   Integer[0]       $tries         = 10,
+  String           $version,
 ) {
 
   mongodb_database { $db_name:
@@ -25,20 +26,38 @@ define mongodb::db (
     tries  => $tries,
   }
 
-  if $password_hash {
-    $hash = $password_hash
-  } elsif $password {
-    $hash = mongodb_password($user, $password)
-  } else {
-    fail("Parameter 'password_hash' or 'password' should be provided to mongodb::db.")
-  }
+  notice("MongoDB version ${version}")
 
-  mongodb_user { "User ${user} on db ${db_name}":
-    ensure        => present,
-    password_hash => $hash,
-    username      => $user,
-    database      => $db_name,
-    roles         => $roles,
+  if $version =~ /4\./ {
+    if $password {
+      mongodb_user { "User ${user} on db ${db_name}":
+        ensure          => present,
+        password        => $password,
+        username        => $user,
+        database        => $db_name,
+        roles           => $roles,
+        digest_password => true,
+      }
+    } else {
+      fail("Parameter 'password' has to be provided to mongodb::db.")
+    }
+  } else {
+    if $password_hash {
+      $hash = $password_hash
+    } elsif $password {
+      $hash = mongodb_password($user, $password)
+    } else {
+      fail("Parameter 'password_hash' or 'password' should be provided to mongodb::db.")
+    }
+
+    mongodb_user { "User ${user} on db ${db_name}":
+      ensure          => present,
+      password_hash   => $hash,
+      username        => $user,
+      database        => $db_name,
+      roles           => $roles,
+      digest_password => false,
+    }
   }
 
 }

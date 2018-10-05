@@ -104,6 +104,7 @@ class mongodb::server (
       user     => $admin_username,
       password => $admin_password,
       roles    => $admin_roles,
+      version  => $version,
     }
 
     # Make sure it runs before other DB creation
